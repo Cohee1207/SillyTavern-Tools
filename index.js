@@ -81,7 +81,7 @@ async function getYouTubeVideoScript({ url }) {
     const result = await fetch('/api/search/transcript', {
         method: 'POST',
         headers: getRequestHeaders(),
-        body: JSON.stringify({ id, json: true }),
+        body: JSON.stringify({ id, lang: '', json: true}),
     });
 
     if (!result.ok) {
