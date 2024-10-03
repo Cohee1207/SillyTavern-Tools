@@ -81,7 +81,7 @@ async function getYouTubeVideoScript({ url }) {
     const result = await fetch('/api/search/transcript', {
         method: 'POST',
         headers: getRequestHeaders(),
-        body: JSON.stringify({ id, lang: '', json: true}),
+        body: JSON.stringify({ id, lang: '', json: true }),
     });
 
     if (!result.ok) {
@@ -93,7 +93,7 @@ async function getYouTubeVideoScript({ url }) {
         const data = JSON.parse(text);
         const transcript = data.transcript;
         const domParser = new DOMParser();
-        const document = domParser.parseFromString(DOMPurify.sanitize(data.html), 'text/html');
+        const document = domParser.parseFromString(data.html, 'text/html');
         const title = document.querySelector('meta[itemprop="name"]')?.getAttribute('content');
         const description = document.querySelector('meta[itemprop="description"]')?.getAttribute('content');
         const date = document.querySelector('meta[itemprop="uploadDate"]')?.getAttribute('content');
