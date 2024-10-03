@@ -74,10 +74,11 @@ async function getYouTubeVideoScript({ url }) {
     };
 
     const id = parseId(url);
+    const lang = '';
     const result = await fetch('/api/search/transcript', {
         method: 'POST',
         headers: getRequestHeaders(),
-        body: JSON.stringify({ id }),
+        body: JSON.stringify({ id, lang }),
     });
 
     if (!result.ok) {
