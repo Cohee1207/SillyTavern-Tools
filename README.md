@@ -1,6 +1,6 @@
 # Function Tools Collection
 
-Provides a set of [function tools](https://docs.sillytavern.app/for-contributors/function-calling/) that provide useful utilities for your chats.
+A set of [function tools](https://docs.sillytavern.app/for-contributors/function-calling/) that provide useful utilities for your chats.
 
 ## Installation
 
