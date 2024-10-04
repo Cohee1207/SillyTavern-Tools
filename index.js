@@ -2,6 +2,13 @@ import { getRequestHeaders } from '../../../../script.js';
 import { ToolManager } from '../../../tool-calling.js';
 import { isValidUrl, getReadableText } from '../../../utils.js';
 
+const getUserEnvironmentSchema = Object.freeze({
+    '$schema': 'http://json-schema.org/draft-04/schema#',
+    type: 'object',
+    properties: {},
+    required: []
+});
+
 const getWebPageContentSchema = Object.freeze({
     $schema: 'http://json-schema.org/draft-04/schema#',
     type: 'object',
@@ -111,7 +118,7 @@ async function getYouTubeVideoScript({ url }) {
         name: 'GetUserEnvironment',
         displayName: 'User Environment',
         description: 'Returns the user environment information: preferred language, local date and time, and timezone.',
-        parameters: {},
+        parameters: getUserEnvironmentSchema,
         action: getUserEnvironment,
         formatMessage: () => '', // Suppress the default message
     });
