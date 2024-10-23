@@ -1,25 +1,12 @@
 import { getRequestHeaders } from '../../../../script.js';
 import { ToolManager } from '../../../tool-calling.js';
-import { isValidUrl, getReadableText } from '../../../utils.js';
+import { isValidUrl } from '../../../utils.js';
 
 const getUserEnvironmentSchema = Object.freeze({
     '$schema': 'http://json-schema.org/draft-04/schema#',
     type: 'object',
     properties: {},
     required: []
-});
-
-const getWebPageContentSchema = Object.freeze({
-    $schema: 'http://json-schema.org/draft-04/schema#',
-    type: 'object',
-    properties: {
-        url: {
-            type: 'string'
-        },
-    },
-    required: [
-        'url',
-    ],
 });
 
 const getYouTubeVideoScriptSchema = Object.freeze({
@@ -54,29 +41,6 @@ function getUserEnvironment() {
     const localDate = date.toLocaleString(locale, { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' });
     const localTime = date.toLocaleString(locale, { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false });
     return { locale, localDate, localTime, timeZone };
-}
-
-async function getWebPageContent({ url }) {
-    if (!url) throw new Error('URL is required');
-    if (!isValidUrl(url)) throw new Error('Invalid URL');
-
-    const result = await fetch('/api/search/visit', {
-        method: 'POST',
-        headers: getRequestHeaders(),
-        body: JSON.stringify({ url }),
-    });
-
-    if (!result.ok) {
-        throw new Error('Failed to fetch web page content');
-    }
-
-    const blob = await result.blob();
-    const html = await blob.text();
-    const domParser = new DOMParser();
-    const document = domParser.parseFromString(DOMPurify.sanitize(html), 'text/html');
-    const title = document.querySelector('title')?.textContent;
-    const text = await getReadableText(document, 'body');
-    return { title, text };
 }
 
 async function getYouTubeVideoScript({ url }) {
@@ -130,14 +94,5 @@ async function getYouTubeVideoScript({ url }) {
         parameters: getYouTubeVideoScriptSchema,
         action: getYouTubeVideoScript,
         formatMessage: (args) => args && args.url ? `Getting video script for ${parseId(args.url)}...` : '',
-    });
-
-    ToolManager.registerFunctionTool({
-        name: 'GetWebPageContent',
-        displayName: 'Web Page Content',
-        description: 'Returns the text content of a web page. Called when a URL is detected in the user input.',
-        parameters: getWebPageContentSchema,
-        action: getWebPageContent,
-        formatMessage: (args) => args && args.url ? `Getting content from ${new URL(args.url).hostname}...` : '',
     });
 })();

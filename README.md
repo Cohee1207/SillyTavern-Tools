@@ -27,10 +27,6 @@ Returns the user environment information: preferred language, local date and tim
 
 Returns a YouTube video script. Called when a YouTube video URL is detected in the user input.
 
-### GetWebPageContent
-
-Returns the text content of a web page. Called when a URL is detected in the user input.
-
 **MORE TOOLS COMING SOON!**
 
 ## Credits
